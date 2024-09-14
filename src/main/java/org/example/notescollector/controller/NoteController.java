@@ -14,8 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/notes")
 public class NoteController {
+    
     //Json object aka serialization karagan oni
-   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,  produces = MediaType.APPLICATION_JSON_VALUE)
+   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, //serialization
+                produces = MediaType.APPLICATION_JSON_VALUE )//deserialization
 
    public String saveNotes(@RequestBody NoteDTO noteDTO) {
        noteDTO.setNoteId(AppUtil.generateNoteId());
