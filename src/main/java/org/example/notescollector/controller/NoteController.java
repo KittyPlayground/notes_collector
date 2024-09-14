@@ -7,10 +7,7 @@ import org.example.notescollector.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.MimeType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,21 +15,23 @@ import java.util.List;
 @RequestMapping("api/v1/notes")
 public class NoteController {
     @Autowired
-    NoteService noteService;
+     private NoteService noteService;
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, //serialization
                 produces = MediaType.APPLICATION_JSON_VALUE )//deserialization
 
-   public String saveNotes(@RequestBody NoteDTO noteDTO) {
-       noteDTO.setNoteId(AppUtil.generateNoteId());
-       return "note save success";
+   public NoteDTO saveNotes(@RequestBody NoteDTO noteDTO) {
+
+       return noteService.saveNote(noteDTO);
 
    }
    public NoteDTO getSelectedNotes() {
         return null;
 
     }
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NoteDTO> getAllNotes() {
-        return null;
+        return noteService.getAllNotes();
     }
     public void deletedNotes() {
 
