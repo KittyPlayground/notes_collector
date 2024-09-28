@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -19,13 +20,25 @@ public class UserController {
             @RequestPart("lastName")String lastName,
             @RequestPart("email")String email,
             @RequestPart("password")String password,
-            @RequestPart("profilePic")String profilePic
+            @RequestPart("profilePic") MultipartFile profilePic
 
     ){
         //userId generate
         String userId = AppUtil.generateUserId();
         //:profile pic convert Base64
-        String base64ProPic = AppUtil.generateProfilePictoBase64(profilePic);
+       // String base64ProPic = AppUtil.generateProfilePictoBase64(profilePic);
+
+        System.out.println("profile pic"+profilePic);
+        String base64ProPic = "";
+
+        try{
+            byte [] profileByte = profilePic.getBytes();
+            base64ProPic = AppUtil.generateProfilePictoBase64(profileByte);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         //:Build the object
         var buildUserDTO = new UserDTO();
         buildUserDTO.setUserID(userId);
@@ -33,7 +46,7 @@ public class UserController {
         buildUserDTO.setLastName(lastName);
         buildUserDTO.setEmail(email);
         buildUserDTO.setPassword(password);
-        buildUserDTO.setProfilePic(profilePic);
+        buildUserDTO.setProfilePic( base64ProPic);
 
         return buildUserDTO;
 
