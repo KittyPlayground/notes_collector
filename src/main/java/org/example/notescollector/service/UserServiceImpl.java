@@ -33,8 +33,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(String userId) {
-        return false;
+    public UserDTO getUser(String userId){
+        UserEntity selectedUser = userDao.getReferenceById(userId);
+        return mapping.toUserDTO(selectedUser);
+
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        userDao.deleteById(userId);
     }
 
     @Override

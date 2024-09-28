@@ -4,12 +4,11 @@ import org.example.notescollector.dto.impl.UserDTO;
 import org.example.notescollector.service.UserService;
 import org.example.notescollector.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.ls.LSOutput;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -31,7 +30,6 @@ public class UserController {
         String userId = AppUtil.generateUserId();
         //:profile pic convert Base64
         // String base64ProPic = AppUtil.generateProfilePictoBase64(profilePic);
-        System.out.println("profile pic" + profilePic);
         String base64ProPic = "";
 
         try {
@@ -50,6 +48,15 @@ public class UserController {
         buildUserDTO.setProfilePic(base64ProPic);
         return userService.saveUser(buildUserDTO);
 
+    }
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDTO getSelectedUser(@PathVariable("userId") String userId) {
+        return userService.getUser(userId);
+    }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "/{userId}")
+    public void deleteUser(@PathVariable("userId") String userId) {
+        userService.deleteUser(userId);
     }
 
 }
