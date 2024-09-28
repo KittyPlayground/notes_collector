@@ -48,7 +48,7 @@ public class UserController {
         buildUserDTO.setEmail(email);
         buildUserDTO.setPassword(password);
         buildUserDTO.setProfilePic(base64ProPic);
-        return buildUserDTO;
+        return userService.saveUser(buildUserDTO);
 
     }
 

@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "org.example.notescollector.dao")
 @EnableTransactionManagement
 @ComponentScan(basePackages = "org.example.notescollector")
 public class WebAppRootConfig {

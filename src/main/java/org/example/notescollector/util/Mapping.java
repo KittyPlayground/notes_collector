@@ -11,10 +11,10 @@ public class Mapping {
     @Autowired
     private ModelMapper modelMapper;
     //for user mapping
-    public UserEntity toEntity(UserDTO userDTO) {
+    public UserEntity toUserEntity(UserDTO userDTO) {
         return modelMapper.map(userDTO, UserEntity.class);
     }
-    public UserDTO toDTO(UserEntity userEntity) {
+    public UserDTO toUserDTO(UserEntity userEntity) {
         return modelMapper.map(userEntity, UserDTO.class);
     }
 
