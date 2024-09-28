@@ -15,28 +15,31 @@ import java.util.List;
 @RequestMapping("api/v1/notes")
 public class NoteController {
     @Autowired
-     private NoteService noteService;
+    private NoteService noteService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, //serialization
-                produces = MediaType.APPLICATION_JSON_VALUE )//deserialization
+            produces = MediaType.APPLICATION_JSON_VALUE)//deserialization
 
-   public NoteDTO saveNotes(@RequestBody NoteDTO noteDTO) {
+    public NoteDTO saveNotes(@RequestBody NoteDTO noteDTO) {
+        return noteService.saveNote(noteDTO);
 
-       return noteService.saveNote(noteDTO);
+    }
 
-   }
-   public NoteDTO getSelectedNotes() {
+    public NoteDTO getSelectedNotes() {
         return null;
 
     }
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NoteDTO> getAllNotes() {
         return noteService.getAllNotes();
     }
+
     public void deletedNotes() {
 
     }
-    public void updateNotes(String noteId,NoteDTO noteDTO) {
+
+    public void updateNotes(String noteId, NoteDTO noteDTO) {
 
     }
 
