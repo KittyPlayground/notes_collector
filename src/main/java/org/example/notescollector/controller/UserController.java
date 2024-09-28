@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
@@ -58,5 +60,8 @@ public class UserController {
     public void deleteUser(@PathVariable("userId") String userId) {
         userService.deleteUser(userId);
     }
-
+   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+   public List <UserDTO> getAllUser() {
+        return userService.getAllUser();
+   }
 }
