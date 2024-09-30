@@ -1,9 +1,12 @@
 package org.example.notescollector.service;
 
 import jakarta.transaction.Transactional;
+import org.example.notescollector.customStatusCodes.SelectedUserErrorStatus;
 import org.example.notescollector.dao.UserDao;
+import org.example.notescollector.dto.UserStatus;
 import org.example.notescollector.dto.impl.UserDTO;
 import org.example.notescollector.entity.impl.UserEntity;
+import org.example.notescollector.exception.DataPersistException;
 import org.example.notescollector.util.AppUtil;
 import org.example.notescollector.util.Mapping;
 import org.modelmapper.ModelMapper;
@@ -12,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -22,9 +27,14 @@ public class UserServiceImpl implements UserService {
     private Mapping mapping;
 
     @Override
-    public UserDTO saveUser(UserDTO userDTO) {
-        UserEntity savedUser = userDao.save(mapping.toUserEntity(userDTO));
-        return mapping.toUserDTO(savedUser);
+    public void saveUser(UserDTO userDTO) {
+        UserEntity saved = userDao.save(mapping.toUserEntity(userDTO));
+        if(saved == null) {
+            throw new DataPersistException("User not saved");
+        }
+
+/*        UserEntity savedUser = userDao.save(mapping.toUserEntity(userDTO));
+        return mapping.toUserDTO(savedUser);*/
     }
 
     @Override
@@ -36,9 +46,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUser(String userId){
-        UserEntity selectedUser = userDao.getReferenceById(userId);
-        return mapping.toUserDTO(selectedUser);
+    public UserStatus getUser(String userId){
+      if(userDao.existsById(userId)){
+          UserEntity selectedUser = userDao.getReferenceById(userId);
+          return mapping.toUserDTO(selectedUser);
+      }else {
+          return new SelectedUserErrorStatus(2,"User not found");
+      }
 
     }
 
@@ -48,7 +62,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(String userId, UserDTO userDTO) {
-        return false;
+    public void updateUser(String userId, UserDTO userDTO) {
+        Optional<UserEntity> tmpUser = userDao.findById(userId);
+        if (tmpUser.isPresent()) {
+            tmpUser.get().setFirstName(userDTO.getFirstName());
+            tmpUser.get().setLastName(userDTO.getLastName());
+            tmpUser.get().setEmail(userDTO.getEmail());
+            tmpUser.get().setPassword(userDTO.getPassword());
+            tmpUser.get().setProfilePic(userDTO.getProfilePic());
+        }
     }
+
+
 }
