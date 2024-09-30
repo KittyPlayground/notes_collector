@@ -74,7 +74,7 @@ public class UserController {
 
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId) {
         String regexForUserId = "USER-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";

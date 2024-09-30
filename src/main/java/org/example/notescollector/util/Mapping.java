@@ -1,6 +1,8 @@
 package org.example.notescollector.util;
 
+import org.example.notescollector.dto.impl.NoteDTO;
 import org.example.notescollector.dto.impl.UserDTO;
+import org.example.notescollector.entity.impl.NoteEntity;
 import org.example.notescollector.entity.impl.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -24,6 +26,15 @@ public class Mapping {
     public List<UserDTO> asUserDTOList(List<UserEntity> userEntity) {
        // return modelMapper.map(userEntity, List.class);
         return modelMapper.map(userEntity, new TypeToken<List<UserDTO>>() {}.getType());
+    }
+    public NoteEntity toNoteEntity(NoteDTO noteDTO) {
+        return modelMapper.map(noteDTO, NoteEntity.class);
+    }
+    public NoteDTO toNoteDTO(NoteEntity noteEntity) {
+        return modelMapper.map(noteEntity, NoteDTO.class);
+    }
+    public List<NoteDTO> asNoteDTOList(List<NoteEntity> noteEntity) {
+        return modelMapper.map(noteEntity, new TypeToken<List<NoteDTO>>() {}.getType());
     }
 
 }
