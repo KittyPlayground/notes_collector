@@ -8,6 +8,7 @@ import org.example.notescollector.exception.DataPersistException;
 import org.example.notescollector.exception.UserNotFoundException;
 import org.example.notescollector.service.UserService;
 import org.example.notescollector.util.AppUtil;
+import org.example.notescollector.util.RegexProcess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -64,10 +65,7 @@ public class UserController {
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserStatus getSelectedUser(@PathVariable("userId") String userId) {
-        String regexForUserId = "USER-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
-        Pattern regexPattern = Pattern.compile(regexForUserId);
-        var regexMatched = regexPattern.matcher(userId); //check for valid user
-        if (!regexMatched.matches()) {
+        if (!RegexProcess.userIdMatcher(userId)) {
             return new SelectedUserErrorStatus(1, "user Id cannot be null or empty");
         }
         return userService.getUser(userId);
@@ -77,9 +75,8 @@ public class UserController {
 
     @DeleteMapping(value = "/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId) {
-        String regexForUserId = "USER-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
         try {
-            if (!userId.matches(regexForUserId)) {
+            if (!RegexProcess.userIdMatcher(userId)) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             userService.deleteUser(userId);

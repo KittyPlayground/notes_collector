@@ -68,7 +68,7 @@ public class NoteServiceImpl implements NoteService {
             tmpNote.get().setNoteDesc(noteDTO.getNoteDesc());
             tmpNote.get().setPriorityLevel(noteDTO.getPriorityLevel());
             tmpNote.get().setCreateDate(noteDTO.getCreateDate());
-            tmpNote.get().getUser().setUserID(noteDTO.getUserId());
+
 
 
         }
